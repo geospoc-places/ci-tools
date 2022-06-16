@@ -55,5 +55,5 @@ docker login $DOCKER_REGISTRY -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 # Build and push each tag (the built image will be reused after the first build)
 for tag in ${tags[@]}; do
   docker build -t $tag .
-  docker push $tag
+  docker push $DOCKER_REGISTRY/$tag
 done
