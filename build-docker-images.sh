@@ -16,12 +16,12 @@ REVISION="$(git rev-parse HEAD)"
 # calculate the full repository name (org and repo name) on Circle if defined
 CIRCLE_REPOSITORY="${CIRCLE_PROJECT_USERNAME:-}/${CIRCLE_PROJECT_REPONAME:-}"
 # get the repository name (e.g. pelias/api) from either CircleCI or Github
-DOCKER_PROJECT_OG="${GITHUB_REPOSITORY:-$CIRCLE_REPOSITORY}"
+DOCKER_PROJECT="${DOCKER_REGISTRY}/${GITHUB_REPOSITORY:-$CIRCLE_REPOSITORY}"
 
 # construct project name, removing `docker-` prefix if present
 # this means a Github repository like pelias/docker-libpostal-baseimage will
 # end up pushing to the pelias/libpostal-baseimage docker tag
-DOCKER_PROJECT="${DOCKER_PROJECT_OG/\/docker-/\/}"
+DOCKER_PROJECT="${DOCKER_PROJECT/\/docker-/\/}"
 
 # construct a "branch" name valid on Docker
 invalid_chars="/@" # list of characters not valid in a docker tag
@@ -55,5 +55,5 @@ docker login $DOCKER_REGISTRY -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 # Build and push each tag (the built image will be reused after the first build)
 for tag in ${tags[@]}; do
   docker build -t $tag .
-  docker push $DOCKER_REGISTRY/$DOCKER_PROJECT_OG
+  docker push $tag
 done
