@@ -49,8 +49,8 @@ if [[ "$BRANCH" == "master" ]]; then
   done
 fi
 
-# log in to Docker Hub _before_ building to avoid rate limits
-docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+# log in to GHCR _before_ building to avoid rate limits
+docker login $DOCKER_REGISTRY -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 
 # Build and push each tag (the built image will be reused after the first build)
 for tag in ${tags[@]}; do
