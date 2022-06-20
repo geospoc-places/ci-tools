@@ -52,10 +52,11 @@ fi
 # log in to Docker Hub or GHCR _before_ building to avoid rate limits
 docker login $DOCKER_REGISTRY -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 
-if [[ -z "${NODE_AUTH_TOKEN}" ]]; then
+token=${NODE_AUTH_TOKEN:-}
+if [[ -z "${token}" ]]; then
   ARGS=""
 else
-  ARGS="--build-arg NODE_AUTH_TOKEN=$NODE_AUTH_TOKEN"
+  ARGS="--build-arg NODE_AUTH_TOKEN=$token"
 fi
 
 # Build and push each tag (the built image will be reused after the first build)
